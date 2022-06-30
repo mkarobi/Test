@@ -35,6 +35,7 @@ namespace TFWebService.Repo.Infrastructure
             Expression<Func<TEntity, bool>> filter,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
             string includEntity);
-        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where);
+        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where,
+            string includEntity = "");
     }
 }

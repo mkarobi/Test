@@ -24,6 +24,8 @@ namespace TFWebService.Data.Models
         public string PhoneNumber { get; set; } = null;
         public string Address { get; set; } = null;
 
+        public bool IsAdmin { get; set; } = false;
+
         [Required]
         public byte[] PasswordHash { get; set; }
         [Required]

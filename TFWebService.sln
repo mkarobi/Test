@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFWebService.Data", "TFWebService.Data\TFWebService.Data.csproj", "{00CC8912-531F-40A6-BDE4-09232AD390C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFWebService.Data", "TFWebService.Data\TFWebService.Data.csproj", "{00CC8912-531F-40A6-BDE4-09232AD390C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFWebService.Repo", "TFWebService.Repo\TFWebService.Repo.csproj", "{F7525A25-A824-4E01-8436-51D9D753AB21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFWebService.Repo", "TFWebService.Repo\TFWebService.Repo.csproj", "{F7525A25-A824-4E01-8436-51D9D753AB21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFWebService.Common", "TFWebService.Common\TFWebService.Common.csproj", "{E907BD05-337A-4974-BA38-155591E4A124}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFWebService.Common", "TFWebService.Common\TFWebService.Common.csproj", "{E907BD05-337A-4974-BA38-155591E4A124}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFWebService.Services", "TFWebService.Services\TFWebService.Services.csproj", "{5356FB03-5DAB-4DCD-A737-82B64A6FD227}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFWebService.Services", "TFWebService.Services\TFWebService.Services.csproj", "{5356FB03-5DAB-4DCD-A737-82B64A6FD227}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFWebService.Presenter", "TFWebService.Presenter\TFWebService.Presenter.csproj", "{C2E2ED71-182F-462B-8A54-23ADD0EAA665}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFWebService.Presenter", "TFWebService.Presenter\TFWebService.Presenter.csproj", "{C2E2ED71-182F-462B-8A54-23ADD0EAA665}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -138,9 +138,15 @@ namespace TFWebService.Repo.Infrastructure
             } 
 
         }
-        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where)
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> where,
+            string includEntity = "")
         {
-            return await _dbSet.Where(where).FirstOrDefaultAsync();
+            IQueryable<TEntity> query = _dbSet;
+            foreach (var includentity in includEntity.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includentity);
+            }
+            return await query.FirstOrDefaultAsync();
         }
         #endregion
 

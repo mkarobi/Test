@@ -17,5 +17,6 @@ namespace TFWebService.Data.DatabaseContext
         public DbSet<MainDetails> MainDetails { get; set; }
         public DbSet<FoodsCalories> FoodCalories { get; set; }
         public DbSet<FitnessCalories> FitnessCalories { get; set; }
+        public DbSet<Device> Devices { get; set; }
     }
 }

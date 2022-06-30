@@ -79,7 +79,18 @@ namespace TFWebService.Repo.Infrastructure
         }
 
 
-
+        private IDeviceRepository _deviceRepository;
+        public IDeviceRepository DeviceRepository 
+        {
+            get
+            {
+                if (_deviceRepository == null)
+                {
+                    _deviceRepository = new DeviceRepository(_db);
+                }
+                return _deviceRepository;
+            }
+        }
 
 
 

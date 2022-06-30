@@ -22,7 +22,7 @@ namespace TFWebService.Data.Models
         public string PersianDate { get; set; } = null;
 
         [Required]
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public User User { get; set; }
 
 

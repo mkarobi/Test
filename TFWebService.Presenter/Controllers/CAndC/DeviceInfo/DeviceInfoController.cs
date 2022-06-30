@@ -2,31 +2,29 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TFWebService.Common.ErrorAndMessage;
 using TFWebService.Data.DatabaseContext;
 using TFWebService.Repo.Infrastructure;
 
-namespace TFWebService.Presenter.Controllers.Api.User
+namespace TFWebService.Presenter.Controllers.CAndC.DeviceInfo
 {
     [Authorize]
-    [ApiExplorerSettings(GroupName = "WebService")]
-    [Route("Api/[controller]")]
+    [ApiExplorerSettings(GroupName = "CANDC")]
+    [Route("CANDC/[controller]")]
     [ApiController]
-    public class UserController : Controller
+    public class DeviceInfoController : Controller
     {
         private readonly IUnitOfWork<TFDbContext> _dbContext;
         private readonly IMapper _mapper;
 
-        public UserController(IUnitOfWork<TFDbContext> dbContext, IMapper mapper)
+        public DeviceInfoController(IUnitOfWork<TFDbContext> dbContext,IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
-        // GET: Get All Users
-        public async Task<ActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var user = await _dbContext.UserRepository.GetByIdAsync(int.Parse(userId));
@@ -43,10 +41,7 @@ namespace TFWebService.Presenter.Controllers.Api.User
             {
                 if (user.IsAdmin == true)
                 {
-                    var usersFromRepo = await _dbContext.UserRepository.GetAllAsync();
-                    if (usersFromRepo == null)
-                        return NoContent();
-                    return Ok(usersFromRepo);
+                    return NoContent();
                 }
                 else
                 {
@@ -61,13 +56,11 @@ namespace TFWebService.Presenter.Controllers.Api.User
             }
         }
 
-
-        // Get : Get User with Id
-        [HttpGet("{id}")]
-        public async Task<ActionResult> Index(int id)
+        [HttpGet("userId")]
+        public async Task<IActionResult> Index(int userId)
         {
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = await _dbContext.UserRepository.GetByIdAsync(int.Parse(userId));
+            string userIdFromToken = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = await _dbContext.UserRepository.GetByIdAsync(int.Parse(userIdFromToken));
 
             if (user == null)
                 return Unauthorized(new ReturnMessage()
@@ -81,10 +74,10 @@ namespace TFWebService.Presenter.Controllers.Api.User
             {
                 if (user.IsAdmin == true)
                 {
-                    var userFromRepo = await _dbContext.UserRepository.GetByIdAsync(id);
-                    if (userFromRepo == null)
+                    var deviceFromRepo = await _dbContext.DeviceRepository.GetAsync(q => q.UserId == userId,"User");
+                    if(deviceFromRepo == null)
                         return NoContent();
-                    return Ok(userFromRepo);
+                    return Ok(deviceFromRepo);
                 }
                 else
                 {
@@ -98,8 +91,5 @@ namespace TFWebService.Presenter.Controllers.Api.User
                 }
             }
         }
-
-
-
     }
 }
