@@ -2,25 +2,18 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
-namespace TFWebService.Data.Models
+namespace TFWebService.Data.Dtos.Api.Learn
 {
-    public class FoodsCalories : BaseEntity<int>
+    public class FoodForAddDto
     {
-        public FoodsCalories()
-        {
-            Id = new int();
-            CreateTime = DateTime.Now;
-            UpdateTime= DateTime.Now;
-        }
-
         [Required]
         public string Title { get; set; }
         public string Properties { get; set; } = null;
         public string HowToMake { get; set; } = null;
         public string AmountCalories { get; set; } = null;
         public string PicUrl { get; set; } = null;
-
-
+        public IFormFile File { get; set; }
     }
 }

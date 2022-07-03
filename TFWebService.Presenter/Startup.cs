@@ -37,10 +37,11 @@ namespace TFWebService.Presenter
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddNewtonsoftJson(opt =>
-            {
-                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            });
+            services.AddControllers()
+                .AddNewtonsoftJson(opt =>
+                {
+                    opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
 
             //services.AddMvc(opt => opt.EnableEndpointRouting = false)
             //    .AddNewtonsoftJson(opt =>
@@ -117,7 +118,7 @@ namespace TFWebService.Presenter
             services.AddOpenApiDocument(document =>
             {
                 document.DocumentName = "CANDC";
-                document.ApiGroupNames = new[] {"CANDC" };
+                document.ApiGroupNames = new[] { "CANDC" };
                 document.PostProcess = d =>
                 {
                     d.Info.Title = "Tanasob Fitness CANDC";

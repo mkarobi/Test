@@ -1,4 +1,6 @@
-﻿using System.Security.Claims;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TFWebService.Common.ErrorAndMessage;
 using TFWebService.Data.DatabaseContext;
+using TFWebService.Data.Dtos.Api.Auth;
 using TFWebService.Presenter.Helper.Filter;
 using TFWebService.Repo.Infrastructure;
 
@@ -45,7 +48,8 @@ namespace TFWebService.Presenter.Controllers.Api.User
             var userFromRepo = await _dbContext.UserRepository.GetByIdAsync(id);
             if (userFromRepo == null)
                 return NoContent();
-            return Ok(userFromRepo);
+            var mapped = _mapper.Map<UserForDetailDto>(userFromRepo);
+            return Ok(mapped);
         }
         
     }

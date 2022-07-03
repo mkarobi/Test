@@ -16,14 +16,14 @@ namespace TFWebService.Services.Upload.Service
         {
             _db = dbContext;
         }
-        public async Task<FileUploadedDto> UploadProfilePic(IFormFile file, string userId, string WebRootPath, string UrlBegan)
+        public async Task<FileUploadedDto> UploadPic(IFormFile file, string userId, string WebRootPath, string UrlBegan,int category)
         {
             
-            return await UploadProfilePicToLocal(file, userId, WebRootPath, UrlBegan);
+            return await UploadPicToLocal(file, userId, WebRootPath, UrlBegan);
             
         }
 
-        public async Task<FileUploadedDto> UploadProfilePicToLocal(IFormFile file, string userId, string WebRootPath, string UrlBegan)
+        public async Task<FileUploadedDto> UploadPicToLocal(IFormFile file, string userId, string WebRootPath, string UrlBegan)
         {
 
             if (file.Length > 0)
