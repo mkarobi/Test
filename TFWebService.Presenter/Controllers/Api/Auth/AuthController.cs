@@ -62,7 +62,7 @@ namespace TFWebService.Presentation.Controllers.Site.Admin
                 DateOfBirth = DateTime.Now,
                 IsAcive = true,
                 Status = true,
-                IsAdmin = true
+                IsAdmin = false
             };
 
             var createdUser = await _authService.Register(userToCreate, userForRegisterDto.Password);

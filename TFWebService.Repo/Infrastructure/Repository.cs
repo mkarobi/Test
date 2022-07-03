@@ -142,9 +142,15 @@ namespace TFWebService.Repo.Infrastructure
             string includEntity = "")
         {
             IQueryable<TEntity> query = _dbSet;
-            foreach (var includentity in includEntity.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+
+            if (where != null)
             {
-                query = query.Include(includentity);
+                query = query.Where(where);
+            }
+
+            foreach (var includeentity in includEntity.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeentity);
             }
             return await query.FirstOrDefaultAsync();
         }

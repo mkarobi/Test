@@ -16,6 +16,7 @@ using NSwag.Generation.Processors.Security;
 using TFWebService.Common.Helper;
 using TFWebService.Common.Helpers;
 using TFWebService.Data.DatabaseContext;
+using TFWebService.Presenter.Helper.Filter;
 using TFWebService.Repo.Infrastructure;
 using TFWebService.Services.Site.Admin.Auth.Interface;
 using TFWebService.Services.Site.Admin.Auth.Service;
@@ -50,6 +51,7 @@ namespace TFWebService.Presenter
 
             services.AddCors();
 
+
             //Db
             services.AddEntityFrameworkSqlite().AddDbContext<TFDbContext>(ServiceLifetime.Transient);
             using (var db = new TFDbContext())
@@ -57,12 +59,13 @@ namespace TFWebService.Presenter
                 db.Database.Migrate();
             }
             services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
-            
+
             //Services
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUploadService, UploadService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
-
+            services.AddScoped<UserCheckAdminFilter>();
 
 
             // Auto Mapper Configurations
