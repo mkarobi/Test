@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using TFWebService.Common.Helper;
 
 namespace TFWebService.Services.Upload.Service
 {
@@ -16,14 +17,14 @@ namespace TFWebService.Services.Upload.Service
         {
             _db = dbContext;
         }
-        public async Task<FileUploadedDto> UploadPic(IFormFile file, string userId, string WebRootPath, string UrlBegan,int category)
+        public async Task<FileUploadedDto> UploadPic(IFormFile file, string userId, string WebRootPath, string UrlBegan,EnumCategoryFilesPath categoryPath)
         {
             
-            return await UploadPicToLocal(file, userId, WebRootPath, UrlBegan);
+            return await UploadPicToLocal(file, userId, WebRootPath, UrlBegan, categoryPath);
             
         }
 
-        public async Task<FileUploadedDto> UploadPicToLocal(IFormFile file, string userId, string WebRootPath, string UrlBegan)
+        public async Task<FileUploadedDto> UploadPicToLocal(IFormFile file, string userId, string WebRootPath, string UrlBegan, EnumCategoryFilesPath categoryPath)
         {
 
             if (file.Length > 0)
@@ -32,8 +33,8 @@ namespace TFWebService.Services.Upload.Service
                 {
                     string fileName = Path.GetFileName(file.FileName);
                     string fileExtention = Path.GetExtension(fileName);
-                    string fileNewName = string.Format("{0}{1}", userId, fileExtention);
-                    string path = Path.Combine(WebRootPath, "Files\\Pic\\Profile");
+                    string fileNewName = string.Format("{0}{1}{2}", userId, DateTime.Now, fileExtention);
+                    string path = Path.Combine(WebRootPath, "Files\\Pic\\"+categoryPath);
                     string fullPath = Path.Combine(path, fileNewName);
 
                     using (var stream = new FileStream(fullPath, FileMode.Create))
@@ -47,7 +48,7 @@ namespace TFWebService.Services.Upload.Service
                         LocalUploaded = true,
                         Message = "با موفقیت در لوکال آپلود شد",
                         PublicId = "0",
-                        Url = string.Format("{0}/{1}", UrlBegan, "wwwroot/Files/Pic/Profile/" + fileNewName)
+                        Url = string.Format("{0}/{1}", UrlBegan, "wwwroot/Files/Pic/"+ categoryPath + fileNewName)
                     };
                 }
                 catch (Exception ex)

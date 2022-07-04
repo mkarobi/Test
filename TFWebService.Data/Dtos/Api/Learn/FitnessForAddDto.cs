@@ -2,19 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
-using Microsoft.VisualBasic.CompilerServices;
+using Microsoft.AspNetCore.Http;
 
-namespace TFWebService.Data.Models
+namespace TFWebService.Data.Dtos.Api.Learn
 {
-    public class FitnessCalories : BaseEntity<int>
+    public class FitnessForAddDto
     {
-        public FitnessCalories()
-        {
-            Id = new int();
-            CreateTime = DateTime.Now;
-            UpdateTime = DateTime.Now;
-        }
-
         [Required]
         public string Title { get; set; }
         public string Muscle { get; set; } = null;
@@ -22,6 +15,6 @@ namespace TFWebService.Data.Models
         public string Number { get; set; } = null;
         public string AmountCalories { get; set; } = null;
         public string PicUrl { get; set; } = null;
-
+        public IFormFile File { get; set; }
     }
 }

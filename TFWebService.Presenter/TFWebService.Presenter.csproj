@@ -27,7 +27,9 @@
 
 	<ItemGroup>
 	  <Folder Include="Controllers\Api\Auth\" />
-	  <Folder Include="wwwroot\Files\Pic\" />
+	  <Folder Include="wwwroot\Files\Pic\Foods\" />
+	  <Folder Include="wwwroot\Files\Pic\Fitness\" />
+	  <Folder Include="wwwroot\Files\Pic\Others\" />
 	</ItemGroup>
 
 </Project>

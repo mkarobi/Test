@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using TFWebService.Data.Dtos.Api.Auth;
+using TFWebService.Data.Dtos.Api.Learn;
+using TFWebService.Data.Dtos.CANDC.DeviceInfo;
 using TFWebService.Data.Models;
 
 namespace TFWebService.Common.Helper
@@ -10,8 +12,9 @@ namespace TFWebService.Common.Helper
         public AutoMapperProfiles()
         {
             CreateMap<User, UserForDetailDto>();
-
-
+            CreateMap<FoodForAddDto, FoodsCalories>();
+            CreateMap<FitnessForAddDto, FitnessCalories>();
+            CreateMap<DeviceForAddDto, Device>();
             /*
             CreateMap<DeviceRegister, RegisterVariablesForWriteParameterDto>()                                
                 .ForMember(des => des.RegisterName, opt =>

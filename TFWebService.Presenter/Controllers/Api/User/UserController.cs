@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -36,7 +37,8 @@ namespace TFWebService.Presenter.Controllers.Api.User
             var usersFromRepo = await _dbContext.UserRepository.GetAllAsync();
             if (usersFromRepo == null)
                 return NoContent();
-            return Ok(usersFromRepo);
+            var user = usersFromRepo.OrderByDescending(q => q.UpdateTime).ToList();
+            return Ok(user);
         }
 
 
@@ -51,6 +53,16 @@ namespace TFWebService.Presenter.Controllers.Api.User
             var mapped = _mapper.Map<UserForDetailDto>(userFromRepo);
             return Ok(mapped);
         }
-        
+
+        [HttpGet("{userId}")]
+        [ServiceFilter(typeof(UserCheckTokenFilter))]
+        public async Task<IActionResult> GetUserInfo(int userId)
+        {
+            var userFromRepo = await _dbContext.UserRepository.GetByIdAsync(userId);
+            if (userFromRepo == null)
+                return BadRequest("خطایی بوجود آمده است. دوباره تلاش کنید.");
+            return Ok(userFromRepo);
+        }
+
     }
 }
