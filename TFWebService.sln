@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFWebService.Services", "TF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFWebService.Presenter", "TFWebService.Presenter\TFWebService.Presenter.csproj", "{C2E2ED71-182F-462B-8A54-23ADD0EAA665}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TFWebService.Test", "TFWebService.Test\TFWebService.Test.csproj", "{6D0F169C-92D1-4A16-815F-79360BBF5BCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TFWebService.Test", "TFWebService.Test\TFWebService.Test.csproj", "{6D0F169C-92D1-4A16-815F-79360BBF5BCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testCode", "testCode\testCode.csproj", "{6BD00828-52A5-481A-AC97-F2AD34A2DE81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{6D0F169C-92D1-4A16-815F-79360BBF5BCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D0F169C-92D1-4A16-815F-79360BBF5BCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D0F169C-92D1-4A16-815F-79360BBF5BCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BD00828-52A5-481A-AC97-F2AD34A2DE81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BD00828-52A5-481A-AC97-F2AD34A2DE81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BD00828-52A5-481A-AC97-F2AD34A2DE81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BD00828-52A5-481A-AC97-F2AD34A2DE81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

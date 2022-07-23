@@ -18,6 +18,8 @@ using TFWebService.Common.Helpers;
 using TFWebService.Data.DatabaseContext;
 using TFWebService.Presenter.Helper.Filter;
 using TFWebService.Repo.Infrastructure;
+using TFWebService.Services.Common.Encrypt.Interface;
+using TFWebService.Services.Common.Encrypt.Service;
 using TFWebService.Services.Site.Admin.Auth.Interface;
 using TFWebService.Services.Site.Admin.Auth.Service;
 using TFWebService.Services.Upload.Interface;
@@ -66,6 +68,7 @@ namespace TFWebService.Presenter
             services.AddScoped<IUploadService, UploadService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEncryptService, EncryptService>();
             services.AddScoped<UserCheckAdminFilter>();
 
 

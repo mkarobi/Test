@@ -16,6 +16,10 @@ using TFWebService.Services.Upload.Interface;
 
 namespace TFWebService.Presenter.Controllers.Api.Learn
 {
+    [Authorize]
+    [ApiExplorerSettings(GroupName = "WebService")]
+    [Route("Api/[controller]")]
+    [ApiController]
     public class LearnController : Controller
     {
         private readonly IUnitOfWork<TFDbContext> _dbContext;
@@ -124,7 +128,7 @@ namespace TFWebService.Presenter.Controllers.Api.Learn
                 });
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Food/{id}", Name = "Food")]
         [ServiceFilter(typeof(UserCheckAdminFilter))]
         public async Task<IActionResult> DeleteFood(int id)
         {
@@ -133,7 +137,7 @@ namespace TFWebService.Presenter.Controllers.Api.Learn
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Fit/{id}",Name = "Fitness")]
         [ServiceFilter(typeof(UserCheckAdminFilter))]
         public async Task<IActionResult> DeleteFitness(int id)
         {

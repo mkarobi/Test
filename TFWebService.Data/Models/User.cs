@@ -32,7 +32,7 @@ namespace TFWebService.Data.Models
         public byte[] PasswordSalt { get; set; }
 
         public bool? Gender { get; set; }
-        public DateTime? DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; } = null;
         public string City { get; set; } = null;
 
         [Required] public bool IsAcive { get; set; } = true;

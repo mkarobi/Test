@@ -59,7 +59,7 @@ namespace TFWebService.Presentation.Controllers.Site.Admin
                 Address = "",
                 City = "",
                 Gender = true,
-                DateOfBirth = DateTime.Now,
+                DateOfBirth = DateTime.Now.ToString(),
                 IsAcive = true,
                 Status = true,
                 IsAdmin = false

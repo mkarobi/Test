@@ -11,7 +11,6 @@ namespace TFWebService.Data.Dtos.Api.Auth
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public string Gender { get; set; }
-        public DateTime LastActive { get; set; }
         public string City { get; set; }
     }
 }
