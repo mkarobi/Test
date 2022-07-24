@@ -70,7 +70,31 @@ namespace TFWebService.Services.Common.Encrypt.Service
 
         public MainDetails MainDetailsDecrypt(MainDetails mainDetails)
         {
-            
+            return new MainDetails()
+            {
+                User = mainDetails.User,
+                UpdateTime = mainDetails.UpdateTime,
+                UserId = mainDetails.UserId,
+                Id = mainDetails.Id,
+                CreateTime = mainDetails.CreateTime,
+                FoodCalories = EncryptionUtils.Decrypt(mainDetails.FoodCalories, EncryptionUtils.Key),
+                SelfWeight = EncryptionUtils.Decrypt(mainDetails.SelfWeight, EncryptionUtils.Key),
+                PersianDate = EncryptionUtils.Decrypt(mainDetails.PersianDate, EncryptionUtils.Key),
+                ActivityCalories = EncryptionUtils.Decrypt(mainDetails.ActivityCalories, EncryptionUtils.Key),
+                TotalCalories = EncryptionUtils.Decrypt(mainDetails.TotalCalories, EncryptionUtils.Key),
+                WaterGlasses = EncryptionUtils.Decrypt(mainDetails.WaterGlasses, EncryptionUtils.Key)
+
+            };
+        }
+
+        public TrackDetails TrackDetailsEncrypt(TrackDetails trackDetails)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TrackDetails TrackDetailsDecrypt(TrackDetails trackDetails)
+        {
+            throw new NotImplementedException();
         }
     }
 }

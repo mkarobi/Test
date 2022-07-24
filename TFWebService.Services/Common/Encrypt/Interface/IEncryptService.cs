@@ -12,5 +12,7 @@ namespace TFWebService.Services.Common.Encrypt.Interface
         User UserEncrypt(User user);
         MainDetails MainDetailsEncrypt (MainDetails mainDetails);
         MainDetails MainDetailsDecrypt (MainDetails mainDetails);
+        TrackDetails TrackDetailsEncrypt (TrackDetails trackDetails);
+        TrackDetails TrackDetailsDecrypt(TrackDetails trackDetails);
     }
 }

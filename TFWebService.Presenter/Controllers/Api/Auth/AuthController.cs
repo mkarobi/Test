@@ -70,7 +70,11 @@ namespace TFWebService.Presentation.Controllers.Site.Admin
             if (createdUser != null)
             {
                 string token = CreateToken(createdUser.Id.ToString(), createdUser.UserName);
-                return Ok(token);
+                return Ok(new
+                {
+                    userToCreate.Id,
+                    token
+                });
             }
             else
             {
@@ -98,7 +102,11 @@ namespace TFWebService.Presentation.Controllers.Site.Admin
 
             //var user = _mapper.Map<UserForDetailDto>(userFromRepo);
 
-            return Ok(token);
+            return Ok(new
+            {
+                userFromRepo.Id,
+                token
+            });
         }
 
         private string CreateToken(string id,string username)
