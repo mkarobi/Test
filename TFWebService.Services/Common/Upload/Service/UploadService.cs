@@ -33,7 +33,7 @@ namespace TFWebService.Services.Upload.Service
                 {
                     string fileName = Path.GetFileName(file.FileName);
                     string fileExtention = Path.GetExtension(fileName);
-                    string fileNewName = string.Format("{0}{1}{2}", userId, DateTime.Now, fileExtention);
+                    string fileNewName = string.Format("-{0}-{1}{2}", userId, DateTime.Now.ToString().Replace("/","").Replace(":",""), fileExtention).Replace(" ","-");
                     string path = Path.Combine(WebRootPath, "Files\\Pic\\"+categoryPath);
                     string fullPath = Path.Combine(path, fileNewName);
 

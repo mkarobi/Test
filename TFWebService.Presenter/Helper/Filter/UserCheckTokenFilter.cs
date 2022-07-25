@@ -19,7 +19,7 @@ namespace TFWebService.Presenter.Helper.Filter
             this._dbContext = dbContext;
         }
 
-        public async override void OnActionExecuting(ActionExecutingContext context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             int userId = int.Parse(context.RouteData.Values["userId"].ToString());
             int userIdFromToken = int.Parse(_httpContextAcc.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);

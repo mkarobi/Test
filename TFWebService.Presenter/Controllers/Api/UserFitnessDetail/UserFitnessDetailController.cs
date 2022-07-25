@@ -201,7 +201,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
             }
         }
 
-        [HttpPut("main/{userId}")]
+        [HttpPut("track/{userId}")]
         [ServiceFilter(typeof(UserCheckTokenFilter))]
         public async Task<IActionResult> UpdateTrackDetail(int userId, TrackDetailForUpdateDto updateDto)
         {
@@ -213,10 +213,31 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                 return NoContent();
             }
 
-            var mapped = _mapper.Map<TrackDetails>(updateDto);
-            var updateDtoDecrypt = _encryptService.TrackDetailsDecrypt(mapped);
+            if (ModelState.IsValid)
+            {
+                var mapped = _mapper.Map<TrackDetails>(updateDto);
+                var updateDtoDecrypt = _encryptService.TrackDetailsDecrypt(mapped);
 
-            lastElement.PersianDate = 
+                lastElement.PersianDate = updateDtoDecrypt.PersianDate;
+                lastElement.TrackActivity = updateDtoDecrypt.TrackActivity;
+                lastElement.TrackFood = updateDtoDecrypt.TrackFood;
+                lastElement.TrackWeight = updateDtoDecrypt.TrackWeight;
+
+                _dbContext.TrackDetailsRepository.Update(lastElement);
+                if (await _dbContext.SaveAsync())
+                {
+                    var updateTrackDetails= _encryptService.TrackDetailsEncrypt(lastElement);
+                    return Ok(updateTrackDetails);
+                }
+                else
+                {
+                    return BadRequest("در سمت سرور خطایی بوجود آمده است.");
+                }
+            }
+            else
+            {
+                return BadRequest("اطلاعات ارسالی نامعتبر است.");
+            }
         }
 
     }

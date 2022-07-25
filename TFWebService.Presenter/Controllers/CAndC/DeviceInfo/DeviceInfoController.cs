@@ -28,7 +28,7 @@ namespace TFWebService.Presenter.Controllers.CAndC.DeviceInfo
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return NotFound();
         }

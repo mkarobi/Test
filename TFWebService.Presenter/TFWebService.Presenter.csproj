@@ -32,4 +32,10 @@
 	  <Folder Include="wwwroot\Files\Pic\Others\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="TFDb.db">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>
