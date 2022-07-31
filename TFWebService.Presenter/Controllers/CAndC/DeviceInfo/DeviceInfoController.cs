@@ -33,7 +33,7 @@ namespace TFWebService.Presenter.Controllers.CAndC.DeviceInfo
             return NotFound();
         }
 
-        [HttpGet("userId")]
+        [HttpGet("{userId}")]
         [ServiceFilter(typeof(UserCheckAdminFilter))]
         public async Task<IActionResult> Index(int userId)
         {
