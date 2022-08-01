@@ -70,6 +70,7 @@ namespace TFWebService.Presenter
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEncryptService, EncryptService>();
             services.AddScoped<UserCheckAdminFilter>();
+            services.AddScoped<UserCheckTokenFilter>();
 
 
             // Auto Mapper Configurations

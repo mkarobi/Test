@@ -60,7 +60,7 @@ namespace TFWebService.Presenter.Controllers.Api.User
         }
 
         //Get : Get UserInfo With That's Id 
-        [HttpGet("{userId}")]
+        [HttpGet("get/{userId}")]
         [ServiceFilter(typeof(UserCheckTokenFilter))]
         public async Task<IActionResult> GetUserInfo(int userId)
         {
