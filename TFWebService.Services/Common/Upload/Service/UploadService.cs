@@ -33,8 +33,8 @@ namespace TFWebService.Services.Upload.Service
                 {
                     string fileName = Path.GetFileName(file.FileName);
                     string fileExtention = Path.GetExtension(fileName);
-                    string fileNewName = string.Format("-{0}-{1}{2}", userId, DateTime.Now.ToString().Replace("/","").Replace(":",""), fileExtention).Replace(" ","-");
-                    string path = Path.Combine(WebRootPath, "Files\\Pic\\"+categoryPath);
+                    string fileNewName = string.Format("{0}-{1}{2}", userId, DateTime.Now.ToString().Replace("/","").Replace(":",""), fileExtention).Replace(" ","-");
+                    string path = Path.Combine(WebRootPath, "Files\\Pic\\"+categoryPath+"\\");
                     string fullPath = Path.Combine(path, fileNewName);
 
                     using (var stream = new FileStream(fullPath, FileMode.Create))
@@ -48,7 +48,7 @@ namespace TFWebService.Services.Upload.Service
                         LocalUploaded = true,
                         Message = "با موفقیت در لوکال آپلود شد",
                         PublicId = "0",
-                        Url = string.Format("{0}/{1}", UrlBegan, "wwwroot/Files/Pic/"+ categoryPath + fileNewName)
+                        Url = string.Format("{0}/{1}", UrlBegan, "wwwroot/Files/Pic/"+ categoryPath+"/" + fileNewName)
                     };
                 }
                 catch (Exception ex)

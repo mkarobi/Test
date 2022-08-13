@@ -40,87 +40,100 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
         }
 
         //get userfitness detailInfo
-        [HttpGet("main/{userId}")]
+        [HttpPost("main/{userId}")]
         [ServiceFilter(typeof(UserCheckTokenFilter))]
-        public async Task<IActionResult> Index(int userId, DateTime dateTime)
+        public async Task<IActionResult> Index(int userId,[FromForm] string datetime)
         {
-            var userFromRepo = await _dbContext.UserRepository.GetByIdAsync(userId);
-            if (userFromRepo == null)
-                return BadRequest(new ReturnMessage()
-                {
-                    Status = false,
-                    title = "کاربر یافت نشد",
-                    message = "آیدی وارد شده نامعتبر است.",
-                    code = "404"
-                });
-
-            var mainDetailFromRepo =
-                await _dbContext.MainDetailsRepository.GetManyAsync(p => p.UserId == userId,
-                    o => o.OrderByDescending(q => q.UpdateTime), null);
-            var lastElementOrDefault = mainDetailFromRepo.LastOrDefault();
-
-            if (lastElementOrDefault == null)
+            try
             {
-                var newMainDetail = new MainDetails()
-                {
-                    User = userFromRepo,
-                    ActivityCalories = "0",
-                    FoodCalories = "0",
-                    PersianDate = "naN",
-                    SelfWeight = "0",
-                    TotalCalories = "0",
-                    WaterGlasses = "0"
-                };
+                DateTime dateTime = DateTime.Parse(datetime);
+                var userFromRepo = await _dbContext.UserRepository.GetByIdAsync(userId);
+                if (userFromRepo == null)
+                    return BadRequest(new ReturnMessage()
+                    {
+                        Status = false,
+                        title = "کاربر یافت نشد",
+                        message = "آیدی وارد شده نامعتبر است.",
+                        code = "404"
+                    });
 
-                await _dbContext.MainDetailsRepository.InserAsync(newMainDetail);
-                if (await _dbContext.SaveAsync())
+                var mainDetailFromRepo =
+                    await _dbContext.MainDetailsRepository.GetManyAsync(p => p.UserId == userId,
+                        o => o.OrderByDescending(q => q.UpdateTime), "");
+                var lastElementOrDefault = mainDetailFromRepo.LastOrDefault();
+
+                if (lastElementOrDefault == null)
                 {
-                    var newMainDetailEncrypted = _encryptService.MainDetailsEncrypt(newMainDetail);
-                    return Ok(newMainDetailEncrypted);
+                    var newMainDetail = new MainDetails()
+                    {
+                        User = userFromRepo,
+                        ActivityCalories = "0",
+                        FoodCalories = "0",
+                        PersianDate = "naN",
+                        SelfWeight = "0",
+                        TotalCalories = "0",
+                        WaterGlasses = "0"
+                    };
+
+                    await _dbContext.MainDetailsRepository.InserAsync(newMainDetail);
+                    if (await _dbContext.SaveAsync())
+                    {
+                        var newMainDetailEncrypted = _encryptService.MainDetailsEncrypt(newMainDetail);
+                        var mapped = _mapper.Map<MainDetailForUpdateDto>(newMainDetailEncrypted);
+                        return Ok(mapped);
+                    }
+                    else
+                    {
+                        return BadRequest("در سمت سرور خطایی بوجود آمده است.");
+                    }
                 }
-                else
+
+
+
+                if (lastElementOrDefault.UpdateTime.Year == dateTime.Year &&
+                        lastElementOrDefault.UpdateTime.Month == dateTime.Month &&
+                        lastElementOrDefault.UpdateTime.Day == dateTime.Day)
                 {
-                    return BadRequest("در سمت سرور خطایی بوجود آمده است.");
+                    var lastElementEncrypted = _encryptService.MainDetailsEncrypt(lastElementOrDefault);
+                    var mapped = _mapper.Map<MainDetailForUpdateDto>(lastElementEncrypted);
+                    return Ok(mapped);
                 }
+                else if (lastElementOrDefault.UpdateTime.Year < dateTime.Year ||
+                          lastElementOrDefault.UpdateTime.Month < dateTime.Month ||
+                          lastElementOrDefault.UpdateTime.Day < dateTime.Day)
+                {
+                    var newMainDetail = new MainDetails()
+                    {
+                        User = userFromRepo,
+                        ActivityCalories = "0",
+                        FoodCalories = "0",
+                        PersianDate = "naN",
+                        SelfWeight = "0",
+                        TotalCalories = "0",
+                        WaterGlasses = "0"
+                    };
+
+                    await _dbContext.MainDetailsRepository.InserAsync(newMainDetail);
+                    if (await _dbContext.SaveAsync())
+                    {
+                        var newMainDetailEncrypted = _encryptService.MainDetailsEncrypt(newMainDetail);
+                        var mapped = _mapper.Map<MainDetailForUpdateDto>(newMainDetailEncrypted);
+                        return Ok(mapped);
+                    }
+                    else
+                    {
+                        return BadRequest("در سمت سرور خطایی بوجود آمده است.");
+                    }
+                }
+                return NoContent();
+
             }
-
-
-
-            if (lastElementOrDefault.UpdateTime.Year == dateTime.Year &&
-                    lastElementOrDefault.UpdateTime.Month == dateTime.Month &&
-                    lastElementOrDefault.UpdateTime.Day == dateTime.Day)
+            catch (Exception e)
             {
-                var lastElementEncrypted = _encryptService.MainDetailsEncrypt(lastElementOrDefault);
-                return Ok(lastElementEncrypted);
+                return NoContent();
             }
-            else if (lastElementOrDefault.UpdateTime.Year < dateTime.Year ||
-                      lastElementOrDefault.UpdateTime.Month < dateTime.Month ||
-                      lastElementOrDefault.UpdateTime.Day < dateTime.Day)
-            {
-                var newMainDetail = new MainDetails()
-                {
-                    User = userFromRepo,
-                    ActivityCalories = "0",
-                    FoodCalories = "0",
-                    PersianDate = "naN",
-                    SelfWeight = "0",
-                    TotalCalories = "0",
-                    WaterGlasses = "0"
-                };
+            
 
-                await _dbContext.MainDetailsRepository.InserAsync(newMainDetail);
-                if (await _dbContext.SaveAsync())
-                {
-                    var newMainDetailEncrypted = _encryptService.MainDetailsEncrypt(newMainDetail);
-                    return Ok(newMainDetailEncrypted);
-                }
-                else
-                {
-                    return BadRequest("در سمت سرور خطایی بوجود آمده است.");
-                }
-            }
-
-            return NoContent();
         }
 
         [HttpGet("track/{userId}")]
@@ -138,7 +151,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                 });
 
             var trackDetailFromRepo = await _dbContext.TrackDetailsRepository.GetManyAsync(p => p.UserId == userId,
-                q => q.OrderByDescending(o => o.UpdateTime), null);
+                q => q.OrderByDescending(o => o.UpdateTime), "");
             var lastElement = trackDetailFromRepo.LastOrDefault();
 
             if (lastElement == null)
@@ -156,7 +169,8 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                 if (await _dbContext.SaveAsync())
                 {
                     var newTrackDetailEncrypted = _encryptService.TrackDetailsEncrypt(newTrackDetails);
-                    return Ok(newTrackDetailEncrypted);
+                    var mapped = _mapper.Map<TrackDetailForUpdateDto>(newTrackDetailEncrypted);
+                    return Ok(mapped);
                 }
                 else
                 {
@@ -166,7 +180,8 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
             else
             {
                 var trackDetailEncrypted = _encryptService.TrackDetailsEncrypt(lastElement);
-                return Ok(trackDetailEncrypted);
+                var mapped = _mapper.Map<TrackDetailForUpdateDto>(trackDetailEncrypted);
+                return Ok(mapped);
             }
 
         }
@@ -193,7 +208,8 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
             if (await _dbContext.SaveAsync())
             {
                 var updateMainDetailEncrypted = _encryptService.MainDetailsEncrypt(mainDetailFromRepo);
-                return Ok(updateMainDetailEncrypted);
+                var returnMapped = _mapper.Map<MainDetailForUpdateDto>(updateMainDetailEncrypted);
+                return Ok(returnMapped);
             }
             else
             {
@@ -206,7 +222,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
         public async Task<IActionResult> UpdateTrackDetail(int userId, TrackDetailForUpdateDto updateDto)
         {
             var trackDetailFromRepo = await _dbContext.TrackDetailsRepository.GetManyAsync(p => p.UserId == userId,
-                q => q.OrderByDescending(o => o.UpdateTime), null);
+                q => q.OrderByDescending(o => o.UpdateTime), "");
             var lastElement = trackDetailFromRepo.LastOrDefault();
             if (lastElement == null)
             {
@@ -227,7 +243,8 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                 if (await _dbContext.SaveAsync())
                 {
                     var updateTrackDetails= _encryptService.TrackDetailsEncrypt(lastElement);
-                    return Ok(updateTrackDetails);
+                    var returnMapped = _mapper.Map<TrackDetailForUpdateDto>(updateTrackDetails);
+                    return Ok(returnMapped);
                 }
                 else
                 {

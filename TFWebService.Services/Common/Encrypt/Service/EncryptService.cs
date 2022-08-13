@@ -89,12 +89,34 @@ namespace TFWebService.Services.Common.Encrypt.Service
 
         public TrackDetails TrackDetailsEncrypt(TrackDetails trackDetails)
         {
-            throw new NotImplementedException();
+            return new TrackDetails()
+            {
+                User = trackDetails.User,
+                UserId = trackDetails.UserId,
+                UpdateTime = trackDetails.UpdateTime,
+                CreateTime = trackDetails.CreateTime,
+                Id = trackDetails.Id,
+                PersianDate = EncryptionUtils.Encrypt(trackDetails.PersianDate, EncryptionUtils.Key),
+                TrackActivity = EncryptionUtils.Encrypt(trackDetails.TrackActivity,EncryptionUtils.Key),
+                TrackFood = EncryptionUtils.Encrypt(trackDetails.TrackFood,EncryptionUtils.Key),
+                TrackWeight = EncryptionUtils.Encrypt(trackDetails.TrackWeight,EncryptionUtils.Key)
+            };
         }
 
         public TrackDetails TrackDetailsDecrypt(TrackDetails trackDetails)
         {
-            throw new NotImplementedException();
+            return new TrackDetails()
+            {
+                User = trackDetails.User,
+                UserId = trackDetails.UserId,
+                UpdateTime = trackDetails.UpdateTime,
+                CreateTime = trackDetails.CreateTime,
+                Id = trackDetails.Id,
+                PersianDate = EncryptionUtils.Decrypt(trackDetails.PersianDate, EncryptionUtils.Key),
+                TrackActivity = EncryptionUtils.Decrypt(trackDetails.TrackActivity, EncryptionUtils.Key),
+                TrackFood = EncryptionUtils.Decrypt(trackDetails.TrackFood, EncryptionUtils.Key),
+                TrackWeight = EncryptionUtils.Decrypt(trackDetails.TrackWeight, EncryptionUtils.Key)
+            };
         }
     }
 }

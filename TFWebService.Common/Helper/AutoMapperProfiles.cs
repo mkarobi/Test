@@ -19,6 +19,8 @@ namespace TFWebService.Common.Helper
             CreateMap<DeviceForAddDto, Device>();
             CreateMap<MainDetailForUpdateDto, MainDetails>();
             CreateMap<TrackDetailForUpdateDto, TrackDetails>();
+            CreateMap<MainDetails, MainDetailForUpdateDto>();
+            CreateMap<TrackDetails, TrackDetailForUpdateDto>();
             /*
             CreateMap<DeviceRegister, RegisterVariablesForWriteParameterDto>()                                
                 .ForMember(des => des.RegisterName, opt =>
