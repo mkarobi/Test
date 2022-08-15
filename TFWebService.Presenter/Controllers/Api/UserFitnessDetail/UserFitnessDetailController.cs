@@ -60,9 +60,9 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                 var mainDetailFromRepo =
                     await _dbContext.MainDetailsRepository.GetManyAsync(p => p.UserId == userId,
                         o => o.OrderByDescending(q => q.UpdateTime), "");
-                var lastElementOrDefault = mainDetailFromRepo.LastOrDefault();
+                var firstElementOrDefault = mainDetailFromRepo.FirstOrDefault();
 
-                if (lastElementOrDefault == null)
+                if (firstElementOrDefault == null)
                 {
                     var newMainDetail = new MainDetails()
                     {
@@ -90,17 +90,17 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
 
 
 
-                if (lastElementOrDefault.UpdateTime.Year == dateTime.Year &&
-                        lastElementOrDefault.UpdateTime.Month == dateTime.Month &&
-                        lastElementOrDefault.UpdateTime.Day == dateTime.Day)
+                if (firstElementOrDefault.UpdateTime.Year == dateTime.Year &&
+                    firstElementOrDefault.UpdateTime.Month == dateTime.Month &&
+                    firstElementOrDefault.UpdateTime.Day == dateTime.Day)
                 {
-                    var lastElementEncrypted = _encryptService.MainDetailsEncrypt(lastElementOrDefault);
+                    var lastElementEncrypted = _encryptService.MainDetailsEncrypt(firstElementOrDefault);
                     var mapped = _mapper.Map<MainDetailForUpdateDto>(lastElementEncrypted);
                     return Ok(mapped);
                 }
-                else if (lastElementOrDefault.UpdateTime.Year < dateTime.Year ||
-                          lastElementOrDefault.UpdateTime.Month < dateTime.Month ||
-                          lastElementOrDefault.UpdateTime.Day < dateTime.Day)
+                else if (firstElementOrDefault.UpdateTime.Year < dateTime.Year ||
+                         firstElementOrDefault.UpdateTime.Month < dateTime.Month ||
+                         firstElementOrDefault.UpdateTime.Day < dateTime.Day)
                 {
                     var newMainDetail = new MainDetails()
                     {
@@ -132,7 +132,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
             {
                 return NoContent();
             }
-            
+
 
         }
 
@@ -242,7 +242,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                 _dbContext.TrackDetailsRepository.Update(lastElement);
                 if (await _dbContext.SaveAsync())
                 {
-                    var updateTrackDetails= _encryptService.TrackDetailsEncrypt(lastElement);
+                    var updateTrackDetails = _encryptService.TrackDetailsEncrypt(lastElement);
                     var returnMapped = _mapper.Map<TrackDetailForUpdateDto>(updateTrackDetails);
                     return Ok(returnMapped);
                 }
