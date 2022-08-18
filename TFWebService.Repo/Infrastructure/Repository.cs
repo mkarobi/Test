@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TFWebService.Repo.Infrastructure
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity>, IDisposable where TEntity : class
+    public class Repository<TEntity> : IRepository<TEntity>, IDisposable where TEntity : class
     {
         #region Ctor
         private readonly DbContext _db;

@@ -94,7 +94,7 @@ namespace TFWebService.Presenter.Controllers.Api.User
                 userFromRepo.DateOfBirth = userParam.DateOfBirth;
 
                 _dbContext.UserRepository.Update(userFromRepo);
-                if (await _dbContext.SaveAsync())
+                if (await _dbContext.SaveAsync(userFromRepo))
                 {
                     var userEncrypt = _encryptService.UserEncrypt(userFromRepo);
                     var mapped = _mapper.Map<Data.Models.User, UserForDetailDto>(userEncrypt);
@@ -116,7 +116,13 @@ namespace TFWebService.Presenter.Controllers.Api.User
                 return BadRequest("پارامترهای ارسال شده نامعتبر است.");
             }
         }
-        
 
+        [HttpGet("token/{userId}")]
+        [ServiceFilter(typeof(UserCheckTokenFilter))]
+        public async Task<IActionResult> CheckTokenExpire(int userId)
+        {
+            string message = "Ok";
+            return Ok(message);
+        }
     }
 }

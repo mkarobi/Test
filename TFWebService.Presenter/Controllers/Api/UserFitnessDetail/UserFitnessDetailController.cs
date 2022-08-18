@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using TFWebService.Common.ErrorAndMessage;
 using TFWebService.Data.DatabaseContext;
 using TFWebService.Data.Dtos.Api.UserFitnessDetail.MainDetail;
@@ -21,7 +21,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
     [ApiController]
     public class UserFitnessDetailController : Controller
     {
-        private readonly IUnitOfWork<TFDbContext> _dbContext;
+        private IUnitOfWork<TFDbContext> _dbContext;
         private readonly IMapper _mapper;
         private readonly IEncryptService _encryptService;
 
@@ -42,7 +42,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
         //get userfitness detailInfo
         [HttpPost("main/{userId}")]
         [ServiceFilter(typeof(UserCheckTokenFilter))]
-        public async Task<IActionResult> Index(int userId,[FromForm] string datetime)
+        public async Task<IActionResult> Index(int userId, [FromForm] string datetime)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                     };
 
                     await _dbContext.MainDetailsRepository.InserAsync(newMainDetail);
-                    if (await _dbContext.SaveAsync())
+                    if (await _dbContext.SaveAsync(newMainDetail))
                     {
                         var newMainDetailEncrypted = _encryptService.MainDetailsEncrypt(newMainDetail);
                         var mapped = _mapper.Map<MainDetailForUpdateDto>(newMainDetailEncrypted);
@@ -94,8 +94,8 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                     firstElementOrDefault.UpdateTime.Month == dateTime.Month &&
                     firstElementOrDefault.UpdateTime.Day == dateTime.Day)
                 {
-                    var lastElementEncrypted = _encryptService.MainDetailsEncrypt(firstElementOrDefault);
-                    var mapped = _mapper.Map<MainDetailForUpdateDto>(lastElementEncrypted);
+                    var firstElementEncrypted = _encryptService.MainDetailsEncrypt(firstElementOrDefault);
+                    var mapped = _mapper.Map<MainDetailForUpdateDto>(firstElementEncrypted);
                     return Ok(mapped);
                 }
                 else if (firstElementOrDefault.UpdateTime.Year < dateTime.Year ||
@@ -113,8 +113,9 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                         WaterGlasses = "0"
                     };
 
+                    _dbContext.Detach(newMainDetail);
                     await _dbContext.MainDetailsRepository.InserAsync(newMainDetail);
-                    if (await _dbContext.SaveAsync())
+                    if (await _dbContext.SaveAsync(newMainDetail))
                     {
                         var newMainDetailEncrypted = _encryptService.MainDetailsEncrypt(newMainDetail);
                         var mapped = _mapper.Map<MainDetailForUpdateDto>(newMainDetailEncrypted);
@@ -152,9 +153,9 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
 
             var trackDetailFromRepo = await _dbContext.TrackDetailsRepository.GetManyAsync(p => p.UserId == userId,
                 q => q.OrderByDescending(o => o.UpdateTime), "");
-            var lastElement = trackDetailFromRepo.LastOrDefault();
+            var firstElement = trackDetailFromRepo.FirstOrDefault();
 
-            if (lastElement == null)
+            if (firstElement == null)
             {
                 var newTrackDetails = new TrackDetails()
                 {
@@ -166,7 +167,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                 };
 
                 await _dbContext.TrackDetailsRepository.InserAsync(newTrackDetails);
-                if (await _dbContext.SaveAsync())
+                if (await _dbContext.SaveAsync(newTrackDetails))
                 {
                     var newTrackDetailEncrypted = _encryptService.TrackDetailsEncrypt(newTrackDetails);
                     var mapped = _mapper.Map<TrackDetailForUpdateDto>(newTrackDetailEncrypted);
@@ -179,7 +180,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
             }
             else
             {
-                var trackDetailEncrypted = _encryptService.TrackDetailsEncrypt(lastElement);
+                var trackDetailEncrypted = _encryptService.TrackDetailsEncrypt(firstElement);
                 var mapped = _mapper.Map<TrackDetailForUpdateDto>(trackDetailEncrypted);
                 return Ok(mapped);
             }
@@ -205,7 +206,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
             mainDetailFromRepo.PersianDate = updateDtoDecrypt.PersianDate;
 
             _dbContext.MainDetailsRepository.Update(mainDetailFromRepo);
-            if (await _dbContext.SaveAsync())
+            if (await _dbContext.SaveAsync(mainDetailFromRepo))
             {
                 var updateMainDetailEncrypted = _encryptService.MainDetailsEncrypt(mainDetailFromRepo);
                 var returnMapped = _mapper.Map<MainDetailForUpdateDto>(updateMainDetailEncrypted);
@@ -221,28 +222,42 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
         [ServiceFilter(typeof(UserCheckTokenFilter))]
         public async Task<IActionResult> UpdateTrackDetail(int userId, TrackDetailForUpdateDto updateDto)
         {
-            var trackDetailFromRepo = await _dbContext.TrackDetailsRepository.GetManyAsync(p => p.UserId == userId,
-                q => q.OrderByDescending(o => o.UpdateTime), "");
-            var lastElement = trackDetailFromRepo.LastOrDefault();
-            if (lastElement == null)
+            var userFromRepo = await _dbContext.UserRepository.GetByIdAsync(userId);
+            if (userFromRepo == null)
+                return BadRequest(new ReturnMessage()
+                {
+                    Status = false,
+                    title = "کاربر یافت نشد",
+                    message = "آیدی وارد شده نامعتبر است.",
+                    code = "404"
+                });
+
+            var trackDetailFromRepo = await _dbContext.TrackDetailsRepository
+                .GetManyAsync(p => p.UserId == userId,
+            q => q.OrderByDescending(o => o.UpdateTime), "User");
+            var firstElement = trackDetailFromRepo.FirstOrDefault();
+            if (firstElement == null)
             {
                 return NoContent();
             }
 
-            if (ModelState.IsValid)
+            firstElement.PersianDate = updateDto.PersianDate;
+            firstElement.TrackActivity = updateDto.TrackActivity;
+            firstElement.TrackFood = updateDto.TrackFood;
+            firstElement.TrackWeight = updateDto.TrackWeight;
+
+            var updateDtoDecrypt = _encryptService.TrackDetailsDecrypt(firstElement);
+            
+
+            try
             {
-                var mapped = _mapper.Map<TrackDetails>(updateDto);
-                var updateDtoDecrypt = _encryptService.TrackDetailsDecrypt(mapped);
+                _dbContext.Detach(updateDtoDecrypt);
+                _dbContext.TrackDetailsRepository.Update(updateDtoDecrypt);
 
-                lastElement.PersianDate = updateDtoDecrypt.PersianDate;
-                lastElement.TrackActivity = updateDtoDecrypt.TrackActivity;
-                lastElement.TrackFood = updateDtoDecrypt.TrackFood;
-                lastElement.TrackWeight = updateDtoDecrypt.TrackWeight;
 
-                _dbContext.TrackDetailsRepository.Update(lastElement);
-                if (await _dbContext.SaveAsync())
+                if (await _dbContext.SaveAsync(updateDtoDecrypt))
                 {
-                    var updateTrackDetails = _encryptService.TrackDetailsEncrypt(lastElement);
+                    var updateTrackDetails = _encryptService.TrackDetailsEncrypt(updateDtoDecrypt);
                     var returnMapped = _mapper.Map<TrackDetailForUpdateDto>(updateTrackDetails);
                     return Ok(returnMapped);
                 }
@@ -251,9 +266,9 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                     return BadRequest("در سمت سرور خطایی بوجود آمده است.");
                 }
             }
-            else
+            catch (Exception e)
             {
-                return BadRequest("اطلاعات ارسالی نامعتبر است.");
+                return BadRequest(e.Message);
             }
         }
 

@@ -26,7 +26,6 @@ namespace TFWebService.Services.Upload.Service
 
         public async Task<FileUploadedDto> UploadPicToLocal(IFormFile file, string userId, string WebRootPath, string UrlBegan, EnumCategoryFilesPath categoryPath)
         {
-
             if (file.Length > 0)
             {
                 try

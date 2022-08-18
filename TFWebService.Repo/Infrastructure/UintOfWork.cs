@@ -106,12 +106,23 @@ namespace TFWebService.Repo.Infrastructure
                 return false;
         }
 
-        public async Task<bool> SaveAsync()
+        public async Task<bool> SaveAsync<T>(T entity)
         {
             if (await _db.SaveChangesAsync() > 0)
+            {
+                _db.Entry(entity).State = EntityState.Detached;
                 return true;
+            }
             else
                 return false;
+        }
+
+        public void Detach<T>(T entity)
+        {
+            _db.Entry(entity).State= EntityState.Deleted;
+            //_db.Entry(entity).State= EntityState.Modified;
+            //_db.Entry(entity).State= EntityState.Added;
+            //_db.Entry(entity).State= EntityState.Detached;
         }
 
         #endregion

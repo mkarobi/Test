@@ -58,8 +58,8 @@ namespace TFWebService.Presenter.Controllers.CAndC.DeviceInfo
 
             await _dbContext.DeviceRepository.InserAsync(deviceMap);
 
-            if (await _dbContext.SaveAsync())
-                return Ok();
+            if (await _dbContext.SaveAsync(deviceMap))
+                return Ok("That's Right!");
             else
                 return BadRequest("خطایی رخ داده است.دوباره امتحان کنید.");
         }

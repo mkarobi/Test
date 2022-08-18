@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TFWebService.Repo.Infrastructure
 {
-    public interface IUnitOfWork<TContext> : IDisposable where TContext:DbContext
+    public interface IUnitOfWork<TContext> : IDisposable where TContext : DbContext
     {
         IUserRepository UserRepository { get; }
         ITrackDetailsRepository TrackDetailsRepository { get; }
@@ -17,6 +17,7 @@ namespace TFWebService.Repo.Infrastructure
         IFitnessCaloriesRepository FitnessCaloriesRepository { get; }
         IDeviceRepository DeviceRepository { get; }
         bool Save();
-        Task<bool> SaveAsync();
+        Task<bool> SaveAsync<T>(T entity);
+        void Detach<T>(T entity);
     }
 }

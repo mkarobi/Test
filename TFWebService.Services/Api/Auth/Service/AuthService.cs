@@ -45,7 +45,7 @@ namespace TFWebService.Services.Site.Admin.Auth.Service
             user.PasswordSalt = passwordSalt;
 
             await _db.UserRepository.InserAsync(user);
-            await _db.SaveAsync();
+            await _db.SaveAsync(user);
 
             return user;
         }

@@ -83,7 +83,7 @@ namespace TFWebService.Presenter.Controllers.Api.Learn
             }
             var mapped = _mapper.Map<FoodsCalories>(food);
             await _dbContext.FoodsCaloriesRepository.InserAsync(mapped);
-            if (await _dbContext.SaveAsync())
+            if (await _dbContext.SaveAsync(mapped))
                 return Ok(mapped);
             else
                 return BadRequest(new ReturnMessage()
@@ -116,7 +116,7 @@ namespace TFWebService.Presenter.Controllers.Api.Learn
             }
             var mapped = _mapper.Map<FitnessCalories>(fitness);
             await _dbContext.FitnessCaloriesRepository.InserAsync(mapped);
-            if (await _dbContext.SaveAsync())
+            if (await _dbContext.SaveAsync(mapped))
                 return Ok(mapped);
             else
                 return BadRequest(new ReturnMessage()

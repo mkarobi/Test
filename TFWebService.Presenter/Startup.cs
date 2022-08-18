@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -61,7 +63,14 @@ namespace TFWebService.Presenter
             {
                 db.Database.Migrate();
             }
-            services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+
+            //services.AddEntityFrameworkSqlite()
+            //    .AddDbContextFactory<TFDbContext>(
+            //    opt => 
+            //    opt.UseSqlite($"Data Source ={Path.Combine(Environment.CurrentDirectory, "TFDb.db")}")
+            //);
+
+            services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
             //Services
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

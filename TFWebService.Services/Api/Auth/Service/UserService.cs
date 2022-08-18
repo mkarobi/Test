@@ -44,7 +44,7 @@ namespace TFWebService.Services.Site.Admin.Auth.Service
 
             _db.UserRepository.Update(user);
 
-            return await _db.SaveAsync();
+            return await _db.SaveAsync(user);
         }
     }
 }
