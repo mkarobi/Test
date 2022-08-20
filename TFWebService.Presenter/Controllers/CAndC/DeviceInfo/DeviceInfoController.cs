@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -10,6 +11,7 @@ using TFWebService.Data.Dtos.CANDC.DeviceInfo;
 using TFWebService.Data.Models;
 using TFWebService.Presenter.Helper.Filter;
 using TFWebService.Repo.Infrastructure;
+using TFWebService.Services.Common.Encrypt.Interface;
 
 namespace TFWebService.Presenter.Controllers.CAndC.DeviceInfo
 {
@@ -21,11 +23,15 @@ namespace TFWebService.Presenter.Controllers.CAndC.DeviceInfo
     {
         private readonly IUnitOfWork<TFDbContext> _dbContext;
         private readonly IMapper _mapper;
+        private readonly IEncryptService _encryptService;
 
-        public DeviceInfoController(IUnitOfWork<TFDbContext> dbContext, IMapper mapper)
+        public DeviceInfoController(IUnitOfWork<TFDbContext> dbContext, 
+            IMapper mapper,
+            IEncryptService encryptService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _encryptService = encryptService;
         }
 
         public IActionResult Index()
@@ -44,24 +50,38 @@ namespace TFWebService.Presenter.Controllers.CAndC.DeviceInfo
 
         [HttpPost("{userId}")]
         [ServiceFilter(typeof(UserCheckTokenFilter))]
-        public async Task<IActionResult> AddUserInfo(string userId, DeviceForAddDto device)
+        public async Task<IActionResult> AddUserInfo(int userId, DeviceForAddDto device)
         {
-            var user = await _dbContext.UserRepository.GetByIdAsync(userId);
-            if (user == null)
-                return BadRequest("کاربر یافت نشد");
+            try
+            {
+                var user = await _dbContext.UserRepository.GetByIdAsync(userId);
+                if (user == null)
+                    return BadRequest("کاربر یافت نشد");
 
-            if (device == null)
-                return BadRequest("اطلاعاتی یافت نشد");
+                if (device == null)
+                    return BadRequest("اطلاعاتی یافت نشد");
 
-            var deviceMap = _mapper.Map<Device>(device);
-            deviceMap.User = user;
+                Device deviceMap = new Device();
+                deviceMap = _mapper.Map<Device>(device);
+                deviceMap.UserId = userId;
 
-            await _dbContext.DeviceRepository.InserAsync(deviceMap);
+                var deviseDecrypt = _encryptService.DeviceDecrypt(deviceMap);
 
-            if (await _dbContext.SaveAsync(deviceMap))
-                return Ok("That's Right!");
-            else
+                await _dbContext.DeviceRepository.InserAsync(deviseDecrypt);
+
+
+                if (await _dbContext.SaveAsync(deviseDecrypt))
+                {
+                    string message = "Ok";
+                    return Ok(message);
+                }
+                else
+                    return BadRequest("خطایی رخ داده است.دوباره امتحان کنید.");
+            }
+            catch(Exception)
+            {
                 return BadRequest("خطایی رخ داده است.دوباره امتحان کنید.");
+            }
         }
     }
 }

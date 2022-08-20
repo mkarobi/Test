@@ -66,7 +66,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                 {
                     var newMainDetail = new MainDetails()
                     {
-                        User = userFromRepo,
+                        UserId = userFromRepo.Id,
                         ActivityCalories = "0",
                         FoodCalories = "0",
                         PersianDate = "naN",
@@ -104,7 +104,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                 {
                     var newMainDetail = new MainDetails()
                     {
-                        User = userFromRepo,
+                        UserId = userFromRepo.Id,
                         ActivityCalories = "0",
                         FoodCalories = "0",
                         PersianDate = "naN",
@@ -129,7 +129,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
                 return NoContent();
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return NoContent();
             }
@@ -159,7 +159,7 @@ namespace TFWebService.Presenter.Controllers.Api.UserFitnessDetail
             {
                 var newTrackDetails = new TrackDetails()
                 {
-                    User = userFromRepo,
+                    UserId = userFromRepo.Id,
                     TrackActivity = "0",
                     TrackFood = "0",
                     PersianDate = "naN",

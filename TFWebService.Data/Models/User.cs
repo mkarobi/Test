@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace TFWebService.Data.Models
 {
@@ -40,5 +39,6 @@ namespace TFWebService.Data.Models
 
         public ICollection<TrackDetails> TrackDetails { get; set; }
         public ICollection<MainDetails> MainDetails { get; set; }
+        public ICollection<Device> Devices { get; set; }
     }
 }

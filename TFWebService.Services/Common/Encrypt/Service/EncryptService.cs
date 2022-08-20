@@ -14,12 +14,12 @@ namespace TFWebService.Services.Common.Encrypt.Service
         {
             return new UserForUpdateDto()
             {
-                Name = EncryptionUtils.Decrypt(userForUpdateDto.Name,EncryptionUtils.Key),
-                Email = EncryptionUtils.Decrypt(userForUpdateDto.Email,EncryptionUtils.Key),
-                PhoneNumber = EncryptionUtils.Decrypt(userForUpdateDto.PhoneNumber,EncryptionUtils.Key),
-                City = EncryptionUtils.Decrypt(userForUpdateDto.City,EncryptionUtils.Key),
-                Address = EncryptionUtils.Decrypt(userForUpdateDto.Address,EncryptionUtils.Key),
-                DateOfBirth = EncryptionUtils.Decrypt(userForUpdateDto.DateOfBirth,EncryptionUtils.Key),
+                Name = EncryptionUtils.Decrypt(userForUpdateDto.Name, EncryptionUtils.Key),
+                Email = EncryptionUtils.Decrypt(userForUpdateDto.Email, EncryptionUtils.Key),
+                PhoneNumber = EncryptionUtils.Decrypt(userForUpdateDto.PhoneNumber, EncryptionUtils.Key),
+                City = EncryptionUtils.Decrypt(userForUpdateDto.City, EncryptionUtils.Key),
+                Address = EncryptionUtils.Decrypt(userForUpdateDto.Address, EncryptionUtils.Key),
+                DateOfBirth = EncryptionUtils.Decrypt(userForUpdateDto.DateOfBirth, EncryptionUtils.Key),
                 Gender = userForUpdateDto.Gender
 
             };
@@ -46,7 +46,7 @@ namespace TFWebService.Services.Common.Encrypt.Service
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
                 TrackDetails = user.TrackDetails,
-                UserName = EncryptionUtils.Encrypt(user.UserName,EncryptionUtils.Key)
+                UserName = EncryptionUtils.Encrypt(user.UserName, EncryptionUtils.Key)
             };
         }
 
@@ -59,7 +59,7 @@ namespace TFWebService.Services.Common.Encrypt.Service
                 UserId = mainDetails.UserId,
                 Id = mainDetails.Id,
                 CreateTime = mainDetails.CreateTime,
-                FoodCalories = EncryptionUtils.Encrypt(mainDetails.FoodCalories,EncryptionUtils.Key),
+                FoodCalories = EncryptionUtils.Encrypt(mainDetails.FoodCalories, EncryptionUtils.Key),
                 SelfWeight = EncryptionUtils.Encrypt(mainDetails.SelfWeight, EncryptionUtils.Key),
                 PersianDate = EncryptionUtils.Encrypt(mainDetails.PersianDate, EncryptionUtils.Key),
                 ActivityCalories = EncryptionUtils.Encrypt(mainDetails.ActivityCalories, EncryptionUtils.Key),
@@ -97,9 +97,9 @@ namespace TFWebService.Services.Common.Encrypt.Service
                 CreateTime = trackDetails.CreateTime,
                 Id = trackDetails.Id,
                 PersianDate = EncryptionUtils.Encrypt(trackDetails.PersianDate, EncryptionUtils.Key),
-                TrackActivity = EncryptionUtils.Encrypt(trackDetails.TrackActivity,EncryptionUtils.Key),
-                TrackFood = EncryptionUtils.Encrypt(trackDetails.TrackFood,EncryptionUtils.Key),
-                TrackWeight = EncryptionUtils.Encrypt(trackDetails.TrackWeight,EncryptionUtils.Key)
+                TrackActivity = EncryptionUtils.Encrypt(trackDetails.TrackActivity, EncryptionUtils.Key),
+                TrackFood = EncryptionUtils.Encrypt(trackDetails.TrackFood, EncryptionUtils.Key),
+                TrackWeight = EncryptionUtils.Encrypt(trackDetails.TrackWeight, EncryptionUtils.Key)
             };
         }
 
@@ -116,6 +116,32 @@ namespace TFWebService.Services.Common.Encrypt.Service
                 TrackActivity = EncryptionUtils.Decrypt(trackDetails.TrackActivity, EncryptionUtils.Key),
                 TrackFood = EncryptionUtils.Decrypt(trackDetails.TrackFood, EncryptionUtils.Key),
                 TrackWeight = EncryptionUtils.Decrypt(trackDetails.TrackWeight, EncryptionUtils.Key)
+            };
+        }
+
+        public Device DeviceDecrypt(Device device)
+        {
+            return new Device()
+            {
+                User = device.User,
+                Id = device.Id,
+                UserId = device.UserId,
+                UpdateTime = device.UpdateTime,
+                CreateTime = device.CreateTime,
+                Type = EncryptionUtils.Decrypt(device.Type, EncryptionUtils.Key),
+                BuildUser = EncryptionUtils.Decrypt(device.BuildUser, EncryptionUtils.Key),
+                Base = EncryptionUtils.Decrypt(device.Base, EncryptionUtils.Key),
+                Incremental = EncryptionUtils.Decrypt(device.Incremental, EncryptionUtils.Key),
+                VersionCode = EncryptionUtils.Decrypt(device.VersionCode, EncryptionUtils.Key),
+                Host = EncryptionUtils.Decrypt(device.Host, EncryptionUtils.Key),
+                Board = EncryptionUtils.Decrypt(device.Board, EncryptionUtils.Key),
+                Brand = EncryptionUtils.Decrypt(device.Brand, EncryptionUtils.Key),
+                BuildID = EncryptionUtils.Decrypt(device.BuildID, EncryptionUtils.Key),
+                DeviceID = EncryptionUtils.Decrypt(device.DeviceID, EncryptionUtils.Key),
+                FingerPrint = EncryptionUtils.Decrypt(device.FingerPrint, EncryptionUtils.Key),
+                Manufacture = EncryptionUtils.Decrypt(device.Manufacture, EncryptionUtils.Key),
+                Model = EncryptionUtils.Decrypt(device.Model, EncryptionUtils.Key),
+                SDK = EncryptionUtils.Decrypt(device.SDK, EncryptionUtils.Key)
             };
         }
     }

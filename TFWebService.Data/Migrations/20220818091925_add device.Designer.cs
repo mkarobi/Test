@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TFWebService.Data.DatabaseContext;
 
 namespace TFWebService.Data.Migrations
 {
     [DbContext(typeof(TFDbContext))]
-    partial class TFDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220818091925_add device")]
+    partial class adddevice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

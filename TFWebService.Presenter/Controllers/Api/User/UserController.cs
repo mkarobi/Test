@@ -119,7 +119,7 @@ namespace TFWebService.Presenter.Controllers.Api.User
 
         [HttpGet("token/{userId}")]
         [ServiceFilter(typeof(UserCheckTokenFilter))]
-        public async Task<IActionResult> CheckTokenExpire(int userId)
+        public IActionResult CheckTokenExpire(int userId)
         {
             string message = "Ok";
             return Ok(message);

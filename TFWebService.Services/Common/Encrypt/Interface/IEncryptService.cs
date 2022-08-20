@@ -14,5 +14,6 @@ namespace TFWebService.Services.Common.Encrypt.Interface
         MainDetails MainDetailsDecrypt (MainDetails mainDetails);
         TrackDetails TrackDetailsEncrypt (TrackDetails trackDetails);
         TrackDetails TrackDetailsDecrypt(TrackDetails trackDetails);
+        Device DeviceDecrypt(Device device);
     }
 }
