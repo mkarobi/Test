@@ -13,6 +13,7 @@
     </PackageReference>
     <PackageReference Include="NLog" Version="5.0.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
     <PackageReference Include="ZNetCS.AspNetCore.Logging.EntityFrameworkCore" Version="6.0.0" />
   </ItemGroup>
 

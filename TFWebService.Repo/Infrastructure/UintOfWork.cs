@@ -78,7 +78,6 @@ namespace TFWebService.Repo.Infrastructure
             }
         }
 
-
         private IDeviceRepository _deviceRepository;
         public IDeviceRepository DeviceRepository 
         {
@@ -92,7 +91,19 @@ namespace TFWebService.Repo.Infrastructure
             }
         }
 
+        private ILocationRepository _locationRepository;
 
+        public ILocationRepository LocationRepository
+        {
+            get
+            {
+                if (_locationRepository == null)
+                {
+                    _locationRepository = new LocationRepository(_db);
+                }
+                return _locationRepository;
+            }
+        }
 
 
         #endregion

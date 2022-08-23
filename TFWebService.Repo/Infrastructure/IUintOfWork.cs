@@ -16,6 +16,7 @@ namespace TFWebService.Repo.Infrastructure
         IFoodsCaloriesRepository FoodsCaloriesRepository { get; }
         IFitnessCaloriesRepository FitnessCaloriesRepository { get; }
         IDeviceRepository DeviceRepository { get; }
+        ILocationRepository LocationRepository { get; }
         bool Save();
         Task<bool> SaveAsync<T>(T entity);
         void Detach<T>(T entity);

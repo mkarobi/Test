@@ -58,23 +58,18 @@ namespace TFWebService.Presenter
 
 
             //Db
-            //services.AddEntityFrameworkSqlite().AddDbContext<TFDbContext>(ServiceLifetime.Transient);
-            //using (var db = new TFDbContext())
-            //{
-            //    db.Database.Migrate();
-            //}
-
+            //services.AddDbContext<TFDbContext>(options =>
+            //    options.UseSqlite($"Data Source ={Path.Combine(Environment.CurrentDirectory, "TFDb.db")}")
+            //        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+            var con = Configuration.GetSection("ConnectionStrings").GetSection("DefaultConnection").Value;
             services.AddDbContext<TFDbContext>(options =>
-                options.UseSqlite($"Data Source ={Path.Combine(Environment.CurrentDirectory, "TFDb.db")}")
+                options.UseNpgsql(con)
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
-            //services.AddEntityFrameworkSqlite()
-            //    .AddDbContextFactory<TFDbContext>(
-            //    opt => 
-            //    opt.UseSqlite($"Data Source ={Path.Combine(Environment.CurrentDirectory, "TFDb.db")}")
-            //);
 
-            services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+
+
+            services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
             //Services
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

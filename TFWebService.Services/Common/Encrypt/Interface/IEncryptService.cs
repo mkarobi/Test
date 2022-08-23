@@ -10,10 +10,11 @@ namespace TFWebService.Services.Common.Encrypt.Interface
     {
         UserForUpdateDto UpdateUserDecrypt(UserForUpdateDto userForUpdateDto);
         User UserEncrypt(User user);
-        MainDetails MainDetailsEncrypt (MainDetails mainDetails);
-        MainDetails MainDetailsDecrypt (MainDetails mainDetails);
-        TrackDetails TrackDetailsEncrypt (TrackDetails trackDetails);
+        MainDetails MainDetailsEncrypt(MainDetails mainDetails);
+        MainDetails MainDetailsDecrypt(MainDetails mainDetails);
+        TrackDetails TrackDetailsEncrypt(TrackDetails trackDetails);
         TrackDetails TrackDetailsDecrypt(TrackDetails trackDetails);
         Device DeviceDecrypt(Device device);
+        Location LocationDecrypt(Location location);
     }
 }

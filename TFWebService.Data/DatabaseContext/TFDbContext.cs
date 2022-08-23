@@ -11,7 +11,7 @@ namespace TFWebService.Data.DatabaseContext
 
         public TFDbContext(DbContextOptions<TFDbContext> options) : base(options)
         {
-            Database.EnsureCreatedAsync();
+            //Database.EnsureCreatedAsync();
         }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

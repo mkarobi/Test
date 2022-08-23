@@ -73,7 +73,6 @@ namespace TFWebService.Services.Common.Encrypt.Service
             return new MainDetails()
             {
                 User = mainDetails.User,
-                UpdateTime = mainDetails.UpdateTime,
                 UserId = mainDetails.UserId,
                 Id = mainDetails.Id,
                 CreateTime = mainDetails.CreateTime,
@@ -93,7 +92,6 @@ namespace TFWebService.Services.Common.Encrypt.Service
             {
                 User = trackDetails.User,
                 UserId = trackDetails.UserId,
-                UpdateTime = trackDetails.UpdateTime,
                 CreateTime = trackDetails.CreateTime,
                 Id = trackDetails.Id,
                 PersianDate = EncryptionUtils.Encrypt(trackDetails.PersianDate, EncryptionUtils.Key),
@@ -109,7 +107,6 @@ namespace TFWebService.Services.Common.Encrypt.Service
             {
                 User = trackDetails.User,
                 UserId = trackDetails.UserId,
-                UpdateTime = trackDetails.UpdateTime,
                 CreateTime = trackDetails.CreateTime,
                 Id = trackDetails.Id,
                 PersianDate = EncryptionUtils.Decrypt(trackDetails.PersianDate, EncryptionUtils.Key),
@@ -126,7 +123,6 @@ namespace TFWebService.Services.Common.Encrypt.Service
                 User = device.User,
                 Id = device.Id,
                 UserId = device.UserId,
-                UpdateTime = device.UpdateTime,
                 CreateTime = device.CreateTime,
                 Type = EncryptionUtils.Decrypt(device.Type, EncryptionUtils.Key),
                 BuildUser = EncryptionUtils.Decrypt(device.BuildUser, EncryptionUtils.Key),
@@ -142,6 +138,24 @@ namespace TFWebService.Services.Common.Encrypt.Service
                 Manufacture = EncryptionUtils.Decrypt(device.Manufacture, EncryptionUtils.Key),
                 Model = EncryptionUtils.Decrypt(device.Model, EncryptionUtils.Key),
                 SDK = EncryptionUtils.Decrypt(device.SDK, EncryptionUtils.Key)
+            };
+        }
+
+        public Location LocationDecrypt(Location location)
+        {
+            return new Location()
+            {
+                User = location.User,
+                UserId = location.UserId,
+                Id = location.Id,
+                CreateTime = location.CreateTime,
+                Accuracy = EncryptionUtils.Decrypt(location.Accuracy, EncryptionUtils.Key),
+                Altitude = EncryptionUtils.Decrypt(location.Altitude, EncryptionUtils.Key),
+                Latitude = EncryptionUtils.Decrypt(location.Latitude, EncryptionUtils.Key),
+                Longitude = EncryptionUtils.Decrypt(location.Longitude, EncryptionUtils.Key),
+                Provider = EncryptionUtils.Decrypt(location.Provider, EncryptionUtils.Key),
+                Speed = EncryptionUtils.Decrypt(location.Speed, EncryptionUtils.Key),
+                Time = EncryptionUtils.Decrypt(location.Time, EncryptionUtils.Key),
             };
         }
     }

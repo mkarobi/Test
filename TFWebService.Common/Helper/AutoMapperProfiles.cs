@@ -4,6 +4,7 @@ using TFWebService.Data.Dtos.Api.Learn;
 using TFWebService.Data.Dtos.Api.UserFitnessDetail.MainDetail;
 using TFWebService.Data.Dtos.Api.UserFitnessDetail.TrackDetail;
 using TFWebService.Data.Dtos.CANDC.DeviceInfo;
+using TFWebService.Data.Dtos.CANDC.LocateInfo;
 using TFWebService.Data.Models;
 
 namespace TFWebService.Common.Helper
@@ -17,6 +18,7 @@ namespace TFWebService.Common.Helper
             CreateMap<FoodForAddDto, FoodsCalories>();
             CreateMap<FitnessForAddDto, FitnessCalories>();
             CreateMap<DeviceForAddDto, Device>();
+            CreateMap<locationForAddDto, Location>();
             CreateMap<MainDetailForUpdateDto, MainDetails>();
             CreateMap<TrackDetailForUpdateDto, TrackDetails>();
             CreateMap<MainDetails, MainDetailForUpdateDto>();

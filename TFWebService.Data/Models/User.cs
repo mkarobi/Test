@@ -40,5 +40,6 @@ namespace TFWebService.Data.Models
         public ICollection<TrackDetails> TrackDetails { get; set; }
         public ICollection<MainDetails> MainDetails { get; set; }
         public ICollection<Device> Devices { get; set; }
+        public ICollection<Location> Locations { get; set; }
     }
 }
