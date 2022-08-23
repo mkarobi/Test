@@ -8,15 +8,16 @@ namespace TFWebService.Data.DatabaseContext
     public class TFDbContext : DbContext
     {
         //public TFDbContext(){}
-        //public TFDbContext(DbContextOptions<TFDbContext> options) : base(options)
-        //{
 
-        //}
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public TFDbContext(DbContextOptions<TFDbContext> options) : base(options)
         {
-            optionsBuilder.UseSqlite($"Data Source ={Path.Combine(Environment.CurrentDirectory, "TFDb.db")}").UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            Database.EnsureCreatedAsync();
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlite($"Data Source ={Path.Combine(Environment.CurrentDirectory, "TFDb.db")}").UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        //}
 
 
         public DbSet<User> Users { get; set; }

@@ -58,11 +58,15 @@ namespace TFWebService.Presenter
 
 
             //Db
-            services.AddEntityFrameworkSqlite().AddDbContext<TFDbContext>(ServiceLifetime.Transient);
-            using (var db = new TFDbContext())
-            {
-                db.Database.Migrate();
-            }
+            //services.AddEntityFrameworkSqlite().AddDbContext<TFDbContext>(ServiceLifetime.Transient);
+            //using (var db = new TFDbContext())
+            //{
+            //    db.Database.Migrate();
+            //}
+
+            services.AddDbContext<TFDbContext>(options =>
+                options.UseSqlite($"Data Source ={Path.Combine(Environment.CurrentDirectory, "TFDb.db")}")
+                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
             //services.AddEntityFrameworkSqlite()
             //    .AddDbContextFactory<TFDbContext>(
